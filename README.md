@@ -1,63 +1,83 @@
 diagrama de classes:
 ```mermaid
 classDiagram
-    class Investimento {
-        -double valorAplicado
-        -int meses
-        +getValorAplicado() double
-        +getMeses() int
-        +calcularRendimento(String tipoProduto) double
+    class Aluno {
+        -float nota
+        +getNota() float
+        +somarNota(float nota1, float nota2)
+        +subtrairNota(float nota1, float nota2)
+        +dividirNota(float nota1, float nota2)
+        +multiplicarNota(float nota1, float nota2)
+        +calcularMediaNotas(float nota1, float nota2)
     }
 
-    class CalculadoraRendimento {
+    class Calculadora {
         <<Singleton>>
-        -static CalculadoraRendimento instance
-        -CalculadoraRendimento()
-        +static getInstance() CalculadoraRendimento
-        +calcular(double valor, int meses, String tipoProduto) double
+        -static Calculadora instance
+        -Calculadora()
+        +static getInstance() Calculadora
+        +calcular(float valor1, float valor2, String operacao) float
     }
 
-    class CalculoRendimentoFactory {
-        +static obterEstrategia(String tipoProduto) CalculoRendimento
+    class OperacaoFactory {
+        +static obterOperacao(String operacao) Operacao
     }
 
-    class CalculoRendimento {
+    class Operacao {
         <<abstract>>
-        +calcular(double valor, int meses) double
-        #validar(double valor, int meses)
-        #executar(double valor, int meses)* double
+        +calcular(float valor1, float valor2) float
+        #validar(float valor1, float valor2)
+        #executar(float valor1, float valor2)* float
     }
 
-    class CalculoRDCPos {
+    class OperacaoSomar {
         <<Singleton>>
-        -static CalculoRDCPos instance
-        -CalculoRDCPos()
-        +static getInstance() CalculoRDCPos
-        #executar(double valor, int meses) double
+        -static OperacaoSomar instance
+        -OperacaoSomar()
+        +static getInstance() OperacaoSomar
+        #executar(float valor1, float valor2) float
     }
 
-    class CalculoCotaCapital {
+    class OperacaoSubtrair {
         <<Singleton>>
-        -static CalculoCotaCapital instance
-        -CalculoCotaCapital()
-        +static getInstance() CalculoCotaCapital
-        #executar(double valor, int meses) double
+        -static OperacaoSubtrair instance
+        -OperacaoSubtrair()
+        +static getInstance() OperacaoSubtrair
+        #executar(float valor1, float valor2) float
     }
 
-    class CalculoLCA {
+    class OperacaoMultiplicar {
         <<Singleton>>
-        -static CalculoLCA instance
-        -CalculoLCA()
-        +static getInstance() CalculoLCA
-        #validar(double valor, int meses)
-        #executar(double valor, int meses) double
+        -static OperacaoMultiplicar instance
+        -OperacaoMultiplicar()
+        +static getInstance() OperacaoMultiplicar
+        #executar(float valor1, float valor2) float
     }
 
-    Investimento ..> CalculadoraRendimento : solicita cálculo
-    CalculadoraRendimento ..> CalculoRendimentoFactory : solicita estratégia
-    CalculoRendimentoFactory ..> CalculoRendimento : obtém instância
-    CalculoRendimento <|-- CalculoRDCPos
-    CalculoRendimento <|-- CalculoCotaCapital
-    CalculoRendimento <|-- CalculoLCA
+    class OperacaoDividir {
+        <<Singleton>>
+        -static OperacaoDividir instance
+        -OperacaoDividir()
+        +static getInstance() OperacaoDividir
+        #validar(float valor1, float valor2)
+        #executar(float valor1, float valor2) float
+    }
+
+    class OperacaoMedia {
+        <<Singleton>>
+        -static OperacaoMedia instance
+        -OperacaoMedia()
+        +static getInstance() OperacaoMedia
+        #executar(float valor1, float valor2) float
+    }
+
+    Aluno ..> Calculadora : chama
+    Calculadora ..> OperacaoFactory : solicita operação
+    OperacaoFactory ..> Operacao : obtém instância
+    Operacao <|-- OperacaoSomar
+    Operacao <|-- OperacaoSubtrair
+    Operacao <|-- OperacaoMultiplicar
+    Operacao <|-- OperacaoDividir
+    Operacao <|-- OperacaoMedia
 
 ```
